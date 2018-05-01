@@ -11,6 +11,11 @@ let position = 0;
 let squareTaken = false;
 let totalTurns = 0;
 let gameOver = false;
+let winningPlayer = 0;
+let player1Wins = 0;
+let player2Wins = 0;
+
+// Checks if the square has been taken yet
 const squareCheck = function (row, position) {
   if (board[row][position] === "") {
     return;
@@ -19,18 +24,19 @@ const squareCheck = function (row, position) {
     squareTaken = true;
   }
 }
+// Checks to see if someone has won
 const winCheck = function () {
   for (var i = 0; i < 3; i++) {
     let currentRow = board.rows[i];
-    let test = board[currentRow][0]+board[currentRow][1]+board[currentRow][2];
-    if (test === "xxx" || test === "ooo") {
+    let winTest = board[currentRow][0]+board[currentRow][1]+board[currentRow][2];
+    if (winTest === "xxx" || winTest === "ooo") {
       someoneWon();
       return;
     }
   }
   for (var i = 0; i < 3; i++) {
-    let test = board.row1[i]+board.row2[i]+board.row3[i];
-    if (test === "xxx" || test === "ooo") {
+    let winTest = board.row1[i]+board.row2[i]+board.row3[i];
+    if (winTest === "xxx" || winTest === "ooo") {
       someoneWon();
       return;
     }
@@ -46,14 +52,22 @@ const winCheck = function () {
     gameOver = true;
   }
 }
+
+// Runs if someone has won
 const someoneWon = function () {
   if (turn === 1) {
     console.log("X Wins!");
+    winningPlayer = 1;
+    player1Wins += 1;
   } else {
     console.log("O Wins!");
+    winningPlayer = 2;
+    player2Wins += 1;
   }
   gameOver = true;
 }
+
+// Function for taking a turn
 const takeTurn = function (square) {
   if (!gameOver) {
     if (square <= 3) {
@@ -75,8 +89,8 @@ const takeTurn = function (square) {
       } else {
         board[row][position] = "o";
       }
-      updateGrid(square, turn);
       winCheck();
+      updateGrid(square, turn);
       if (turn === 1) {
         turn = 0;
       } else {
@@ -96,13 +110,52 @@ $(document).ready(function() {
       takeTurn(i);
     });
   }
+  let $player1 = $('.player1');
+  let $player2 = $('.player2');
+  let $player1Wins = $('.player1Wins');
+  let $player2Wins = $('.player2Wins');
+
+  // Updates the board after each turn
   updateGrid = function(square, turn) {
     let box = eval(`boxes.$box${square}`);
     if (turn === 1) {
       box.text("X");
+      $player1.html("Player 1 <br> Turn: ");
+      $player2.html("Player 2 <br> Turn: ✓");
+      if (winningPlayer === 1) {
+        $player1.html("Player 1 <br> Turn: <br><br> YOU WIN!");
+        $player2.html("Player 2 <br> Turn: ");
+        $player1Wins.text(`Wins: ${player1Wins}`)
+      }
     }
     else {
       box.text("O");
+      $player1.html("Player 1 <br> Turn: ✓");
+      $player2.html("Player 2 <br> Turn: ");
+      if (winningPlayer === 2) {
+        $player1.html("Player 1 <br> Turn: ");
+        $player2.html("Player 2 <br> Turn: <br><br> YOU WIN!");
+        $player2Wins.text(`Wins: ${player2Wins}`)
+      }
     }
   }
+
+  // Starts a new game on button click
+  newGame = function () {
+    for (var i = 1; i < 10; i++) {
+      let box = eval(`boxes.$box${i}`);
+      box.html("&nbsp;");
+    }
+    board.row1 = ["","",""];
+    board.row2 = ["","",""];
+    board.row3 = ["","",""];
+    totalTurns = 0;
+    turn = 1;
+    gameOver = false;
+    winningPlayer = 0;
+    $player1.html("Player 1 <br> Turn: ✓");
+    $player2.html("Player 2 <br> Turn: ");
+  }
+  const $newGame = $('.newGame');
+  $newGame.on("click", newGame);
 });

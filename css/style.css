@@ -1,30 +1,65 @@
+/*
+#17252A
+#2B7A78
+#3AAFA9
+#DEF2F1
+#FEFFFF
+ */
 body {
   margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #3AAFA9;
 }
 .title {
   text-align: center;
   font-size: 40px;
   margin: 10px 0;
 }
+.players {
+  position: absolute;
+  font-size: 50px;
+}
+.player1 {
+  top: 50px;
+  left: 100px;
+}
+.player2 {
+  top: 50px;
+  left: 1150px;
+}
+.player1Wins {
+  top: 165px;
+  left: 100px;
+}
+.player2Wins {
+  top: 165px;
+  left: 1150px;
+}
+.newGame {
+  position: absolute;
+  top: 675px;
+  left: 200px;
+}
 .mainDiv {
-  margin: 0 29.3%;
+  margin: 0 29.6%;
   position: relative;
   height: 600px;
   width: 600px;
-  border: 1px solid red;
-  background-color: white;
+  background-color: #3AAFA9;
 }
 .boxes {
   margin: -5px;
-  border: 5px solid orange;
+  border: 5px solid #17252A;
   width: 32.7%;
   height: 32.7%;
   display: inline-block;
-  font-size: 217px;
+  font-size: 211px;
   text-align: center;
+  background-color: #2B7A78;
+  line-height: 100%;
 }
 .boxes:hover {
-  background: lightgrey;
+  background: #3AAFA9;
   cursor: pointer;
 }
 /* .line {
